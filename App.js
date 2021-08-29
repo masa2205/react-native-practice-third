@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, useWindowDimensions, Image} from 'react-native';
+import {View, StyleSheet, useWindowDimensions, Text} from 'react-native';
 import Card from './src/components/';
 import users from './assets/data/users';
 import Animated, {
@@ -15,6 +15,8 @@ import Animated, {
 import {PanGestureHandler} from 'react-native-gesture-handler';
 import Like from './assets/images/LIKE.png';
 import Nope from './assets/images/nope.png';
+import TopBar from './src/components/TopBar';
+import UnderBar from './src/components/UnderBar';
 
 const ROTATION = 60;
 const SWIPE_VELOCITY = 800;
@@ -94,6 +96,7 @@ const App = () => {
 
   return (
     <View style={styles.container}>
+      <TopBar />
       {nextProfile && (
         <View style={styles.nextCardContainer}>
           <Animated.View style={[styles.animatedCard, nextCardStyle]}>
@@ -119,11 +122,15 @@ const App = () => {
           </Animated.View>
         </PanGestureHandler>
       )}
+      <UnderBar />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  topContainer: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     alignItems: 'center',

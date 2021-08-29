@@ -1,12 +1,6 @@
 import 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Pressable,
-  Text,
-  useWindowDimensions,
-} from 'react-native';
+import {View, StyleSheet, useWindowDimensions, Image} from 'react-native';
 import Card from './src/components/';
 import users from './assets/data/users';
 import Animated, {
@@ -19,6 +13,8 @@ import Animated, {
   runOnJS,
 } from 'react-native-reanimated';
 import {PanGestureHandler} from 'react-native-gesture-handler';
+import Like from './assets/images/LIKE.png';
+import Nope from './assets/images/nope.png';
 
 const ROTATION = 60;
 const SWIPE_VELOCITY = 800;
@@ -62,6 +58,14 @@ const App = () => {
       [1, 0.6, 1],
     ),
   }));
+
+  const likeStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(translateX.value, [0, hiddenTranslateX / 5], [0, 1]),
+  }));
+  const nopeStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(translateX.value, [0, -hiddenTranslateX / 5], [0, 1]),
+  }));
+
   const gesturehandler = useAnimatedGestureHandler({
     onStart: (_, context) => {
       context.startX = translateX.value;
@@ -101,6 +105,16 @@ const App = () => {
       {currentProfile && (
         <PanGestureHandler onGestureEvent={gesturehandler}>
           <Animated.View style={[styles.animatedCard, cardStyle]}>
+            <Animated.Image
+              source={Like}
+              style={[styles.like, {left: 10}, likeStyle]}
+              resizeMode="contain"
+            />
+            <Animated.Image
+              source={Nope}
+              style={[styles.like, {right: 10}, nopeStyle]}
+              resizeMode="contain"
+            />
             <Card user={currentProfile} />
           </Animated.View>
         </PanGestureHandler>
@@ -116,8 +130,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   animatedCard: {
-    width: '100%',
-    flex: 1,
+    width: '90%',
+    height: '70%',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -126,6 +140,14 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  like: {
+    width: 150,
+    height: 150,
+    position: 'absolute',
+    top: 10,
+    zIndex: 1,
+    elevation: 1,
   },
 });
 
